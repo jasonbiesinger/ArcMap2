@@ -91,7 +91,6 @@ var map;
 var Snotel_Network;
 var Utah_DEM;
 var featureLayer;
-	
 require([
   "esri/Map",
   "esri/layers/MapImageLayer",
@@ -117,7 +116,7 @@ require([
   featureLayer = new FeatureLayer({
   	url: "http://geoserver2.byu.edu/arcgis/rest/services/The_SnowMen_FS/Snotel_Network/MapServer",
     outFields: ["*"],
-	popupTemplate: template
+    popupTemplate: template
   });
   
 map.layers.add(Utah_DEM);
@@ -125,6 +124,7 @@ map.layers.add(Snotel_Network);
 map.layers.add(Utah_Counties);
 map.layers.add(Utah_State);
 map.add(featureLayer);
+
   var view = new MapView({
       container: "viewDiv",
       map: map,
@@ -132,25 +132,26 @@ map.add(featureLayer);
       zoom: 7
   });
 });
-	
-	
+
+
 var template = {
-	title: "Snotel Station ID#{id}",
-	content: "<p>County: <b>{county}%</b>.</p>" +
-    "<ul><li>Latitude:{latitude}</li>" +
-    "<li>Longitude:{longitude}</li>" +
-    "<li>Elevation:{elevation}</li><ul>",
+	title: "{name} Station",
+	content: "<p><b>{county} County</b></p>" +
+    "<p>Snotel Station ID# {id}</p>" +
+    "<ul><li>Latitude: {latitude}</li>" +
+    "<li>Longitude: {longitude}</li>" +
+    "<li>Elevation: {elevation_} feet</li><ul>",
   fieldInfos: [{
     fieldName: "latitude",  // The field whose values you want to format
     format: {
       digitSeparator: false, // Uses a comma separator in numbers >999
-      places: 0 // Sets the number of decimal places to 0 and rounds up
+      places: 5 // Sets the number of decimal places to 0 and rounds up
     }
   }, {
     fieldName: "longitude",  // The field whose values you want to format
     format: {
       digitSeparator: false, // Uses a comma separator in numbers >999
-      places: 0 // Sets the number of decimal places to 0 and rounds up
+      places: 5 // Sets the number of decimal places to 0 and rounds up
     }
   }, {
     fieldName: "elevation_",  // The field whose values you want to format
@@ -160,9 +161,9 @@ var template = {
     }
   }]
 };
-	
+
 featureLayer.popupTemplate = template;
-	
+
 	
 function showHide() {
 Utah_DEM.visible = false;
@@ -176,9 +177,6 @@ Snotel_Network.visible = false;
       Snotel_Network.visible = true;
     }
 }
-	
-	
-
 	
 	
 </script>
