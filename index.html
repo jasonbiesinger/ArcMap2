@@ -91,6 +91,7 @@ var map;
 var Snotel_Network;
 var Utah_DEM;
 var featureLayer;
+	
 require([
   "esri/Map",
   "esri/layers/MapImageLayer",
@@ -120,9 +121,7 @@ require([
   });
   
 map.layers.add(Utah_DEM);
-map.layers.add(Snotel_Network);
 map.layers.add(Utah_Counties);
-map.layers.add(Utah_State);
 map.add(featureLayer);
 
   var view = new MapView({
@@ -167,14 +166,14 @@ featureLayer.popupTemplate = template;
 	
 function showHide() {
 Utah_DEM.visible = false;
-Snotel_Network.visible = false;
+featureLayer.visible = false;
 	if(document.getElementById('UtahDEM').checked)
     {
       Utah_DEM.visible = true;
     }
 	if(document.getElementById('SnotelNetwork').checked)
     {
-      Snotel_Network.visible = true;
+      featureLayer.visible = true;
     }
 }
 	
