@@ -2,9 +2,9 @@
 <html>
 <head>
 
-
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 <style>
 body {margin:0;}
 .icon-bar {
@@ -28,6 +28,7 @@ body {margin:0;}
     background-color: #4CAF50 !important;
 }
 </style>
+
 <body>
 
 <div class="icon-bar">
@@ -36,8 +37,6 @@ body {margin:0;}
   <a href="#"><i class="fa fa-search"></i></a> 
   <a href="#"><i class="fa fa-plus"></i></a> 
 </div>
-
-
 
 <meta charset="utf-8">
 <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -67,9 +66,9 @@ body {margin:0;}
 <div id="map"></div>
 
 
-View Utah DEM <input type="checkbox" checked id="UtahDEM" onclick="showHide()">
+View Utah DEM <input type="checkbox" checked="true" id="UtahDEM" onclick="showHide()">
 <br>
-View Snotel Stations <input type="checkbox" checked id="SnotelNetwork" onclick="showHide()">
+View Snotel Stations <input type="checkbox" checked="true" id="SnotelNetwork" onclick="showHide()">
 
 
 <style>
@@ -83,9 +82,8 @@ h1{text-align: center;color: black;}
   width: 100%;
 }
 </style>
-  
-    
-  <link rel="stylesheet" href="https://js.arcgis.com/4.6/esri/css/main.css">
+      
+<link rel="stylesheet" href="https://js.arcgis.com/4.6/esri/css/main.css">
 <script src="https://js.arcgis.com/4.6/"></script>
     
 <script>
@@ -93,10 +91,12 @@ require([
   "esri/Map",
   "esri/layers/MapImageLayer",
   "esri/views/MapView",
+  "esri/layers/FeatureLayer",
   "dojo/domReady!"
-], function(Map, MapImageLayer, MapView) {
+], function(Map, MapImageLayer, MapView, FeatureLayer) {
   var map = new Map({
     basemap: "hybrid"
+	layers: [featureLayer]
   });
   var Snotel_Network = new MapImageLayer({
   	url: "http://geoserver2.byu.edu/arcgis/rest/services/The_SnowMen/Snotel_Network/MapServer"
@@ -110,12 +110,15 @@ require([
   var Utah_State = new MapImageLayer({
   	url: "http://geoserver2.byu.edu/arcgis/rest/services/The_SnowMen/Utah_State/MapServer"
   });
+  var featureLayer = new FeatureLayer({
+  	url: "http://geoserver2.byu.edu/arcgis/rest/services/The_SnowMen/Snotel_Network/MapServer",
+    outFields: ["*"]
+  });
   
 map.layers.add(Utah_DEM);
 map.layers.add(Snotel_Network);
 map.layers.add(Utah_Counties);
 map.layers.add(Utah_State);
-
   var view = new MapView({
       container: "viewDiv",
       map: map,
@@ -123,26 +126,23 @@ map.layers.add(Utah_State);
       zoom: 7
   });
 });
-
-
+	
 function showHide() {
-    if(document.getElementById('UtahDEM').checked)
+	if(document.getElementById('UtahDEM').checked)
     {
-      document.getElementById('Utah_DEM').style.visibility = 'visible';
+      map.layers('Utah_DEM').style.visibility = 'visible';
     }
     else
     {
-      document.getElementById('Utah_DEM').style.visibility = 'hidden';
+      map.layers('Utah_DEM').style.visibility = 'hidden';
     }
-}
-
-function showHide() {
-    var checkBox = document.getElementById("UtahDEM");
-    var checkBox = document.getElementById("SnotelNetwork");
-    if (checkBox.checked == true){
-        checkBox = 'visible';
-    } else {
-        checkBox = 'hidden';
+	if(document.getElementById('SnotelStations').checked)
+    {
+      map.layers('Snotel_Network').style.visibility = 'visible';
+    }
+    else
+    {
+      map.layers('Snotel_Network').style.visibility = 'hidden';
     }
 }
 
