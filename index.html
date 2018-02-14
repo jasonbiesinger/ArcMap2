@@ -91,7 +91,7 @@ var map;
 var Snotel_Network;
 var Utah_DEM;
 var featureLayer;
-
+	
 require([
   "esri/Map",
   "esri/layers/MapImageLayer",
@@ -115,14 +115,16 @@ require([
   	url: "http://geoserver2.byu.edu/arcgis/rest/services/The_SnowMen/Utah_State/MapServer"
   });
   featureLayer = new FeatureLayer({
-  	url: "http://geoserver2.byu.edu/arcgis/rest/services/The_SnowMen/Snotel_Network/MapServer",
-    outFields: ["*"]
+  	url: "http://geoserver2.byu.edu/arcgis/rest/services/The_SnowMen_FS/Snotel_Network/MapServer",
+    outFields: ["*"],
+	popupTemplate: template
   });
   
 map.layers.add(Utah_DEM);
 map.layers.add(Snotel_Network);
 map.layers.add(Utah_Counties);
 map.layers.add(Utah_State);
+map.add(featureLayer);
   var view = new MapView({
       container: "viewDiv",
       map: map,
@@ -131,9 +133,38 @@ map.layers.add(Utah_State);
   });
 });
 	
+	
+var template = {
+	title: "Snotel Station ID#{id}",
+	content: "<p>County: <b>{county}%</b>.</p>" +
+    "<ul><li>Latitude:{latitude}</li>" +
+    "<li>Longitude:{longitude}</li>" +
+    "<li>Elevation:{elevation}</li><ul>",
+  fieldInfos: [{
+    fieldName: "latitude",  // The field whose values you want to format
+    format: {
+      digitSeparator: false, // Uses a comma separator in numbers >999
+      places: 0 // Sets the number of decimal places to 0 and rounds up
+    }
+  }, {
+    fieldName: "longitude",  // The field whose values you want to format
+    format: {
+      digitSeparator: false, // Uses a comma separator in numbers >999
+      places: 0 // Sets the number of decimal places to 0 and rounds up
+    }
+  }, {
+    fieldName: "elevation_",  // The field whose values you want to format
+    format: {
+      digitSeparator: true, // Uses a comma separator in numbers >999
+      places: 0 // Sets the number of decimal places to 0 and rounds up
+    }
+  }]
+};
+	
+featureLayer.popupTemplate = template;
+	
+	
 function showHide() {
-
-
 Utah_DEM.visible = false;
 Snotel_Network.visible = false;
 	if(document.getElementById('UtahDEM').checked)
@@ -144,8 +175,12 @@ Snotel_Network.visible = false;
     {
       Snotel_Network.visible = true;
     }
-
 }
+	
+	
+
+	
+	
 </script>
 
 </head>
