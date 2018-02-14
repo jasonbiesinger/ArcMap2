@@ -67,6 +67,11 @@ body {margin:0;}
 <div id="map"></div>
 
 
+View Utah DEM <input type="checkbox" checked id="UtahDEM" onclick="showHide()">
+<br>
+View Snotel Stations <input type="checkbox" checked id="SnotelNetwork" onclick="showHide()">
+
+
 <style>
 body{background-color: lightgrey}
 p{text-align: center;color: black;}
@@ -105,11 +110,12 @@ require([
   var Utah_State = new MapImageLayer({
   	url: "http://geoserver2.byu.edu/arcgis/rest/services/The_SnowMen/Utah_State/MapServer"
   });
-
+  
 map.layers.add(Utah_DEM);
 map.layers.add(Snotel_Network);
 map.layers.add(Utah_Counties);
 map.layers.add(Utah_State);
+
   var view = new MapView({
       container: "viewDiv",
       map: map,
@@ -117,6 +123,29 @@ map.layers.add(Utah_State);
       zoom: 7
   });
 });
+
+
+function showHide() {
+    if(document.getElementById('UtahDEM').checked)
+    {
+      document.getElementById('Utah_DEM').style.visibility = 'visible';
+    }
+    else
+    {
+      document.getElementById('Utah_DEM').style.visibility = 'hidden';
+    }
+}
+
+function showHide() {
+    var checkBox = document.getElementById("UtahDEM");
+    var checkBox = document.getElementById("SnotelNetwork");
+    if (checkBox.checked == true){
+        checkBox = 'visible';
+    } else {
+        checkBox = 'hidden';
+    }
+}
+
 </script>
 
 </head>
